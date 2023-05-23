@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('admin.types.store') }}" method="POST" class="container" id="save-form"
+    <form action="{{ route('admin.tecnologies.store') }}" method="POST" class="container" id="save-form"
         enctype="multipart/form-data">
         @csrf
         <div class="pt-5 row justify-content-center">
