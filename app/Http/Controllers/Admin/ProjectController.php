@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
+use App\Models\Tecnology;
 use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,7 +21,8 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::all();
-        return view('admin.projects.index', compact('projects'));
+        $tecnologies = Tecnology::all();
+        return view('admin.projects.index', compact('projects', 'tecnologies'));
     }
 
     /**
@@ -31,7 +33,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $tecnologies = Tecnology::all();
+        return view('admin.projects.create', compact('types', 'tecnologies'));
     }
 
     /**
@@ -56,6 +59,10 @@ class ProjectController extends Controller
 
         $project->save();
 
+        if (isset($data['tecnologies'])) {
+            $project->tags()->sync($data['tecnologies']);
+        }
+
         return redirect()->route('admin.projects.index')->with('message', 'Progetto creato con successo');
     }
 
@@ -67,8 +74,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-
-        return view('admin.projects.show', compact('project'));
+        $tecnologies = Tecnology::all();
+        return view('admin.projects.show', compact('project', 'tecnologies'));
     }
 
     /**
@@ -80,8 +87,9 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
+        $tecnologies = Tecnology::all();
 
-        return view('admin.projects.edit', compact('project', 'types'));
+        return view('admin.projects.edit', compact('project', 'types', 'tecnologies'));
     }
 
     /**
@@ -113,6 +121,10 @@ class ProjectController extends Controller
                 $project->image = Storage::put('uploads', $data['image']);
             }
         }
+
+        $tecnologies = isset($data['tecnologies']) ? $data['tecnologies'] : [];
+        $project->tecnologies()->sync($tecnologies);
+
 
 
 

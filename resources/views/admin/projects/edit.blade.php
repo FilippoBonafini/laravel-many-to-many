@@ -53,6 +53,36 @@
                             @endforeach
                         </select>
 
+                        @if ($errors->any())
+                            <div class="mb-3">
+                                <div class="mb-3">Tecnologies</div>
+                                @foreach ($tecnologies as $tecnology)
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="tecnologies"
+                                            value="{{ $tecnology->id }}" name="tecnologies[]"
+                                            {{ in_array($tecnology->id, old('tecnologies', [])) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="tecnologies">{{ $tecnology->name }}</label>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        @else
+                            <div class="mb-3">
+                                <div class="mb-3">Tecnologies</div>
+
+                                @foreach ($tecnologies as $tecnology)
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="tecnologies"
+                                            value="{{ $tecnology->id }}" name="tecnologies[]"
+                                            {{ $project->tecnologies->contains($tecnology->id) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="tecnologies">{{ $tecnology->name }}</label>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        @endif
+
+
                         <div class="form-check form-switch pt-4">
                             <input type="checkbox" name="set_image" value="1" class="form-check-input" role="switch"
                                 id="set_image" @if ($project->image) checked @endif>

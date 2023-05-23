@@ -19,6 +19,11 @@
                         <h5 class="pt-3">Type of project:</h5>
                         <p>{{ $project->type?->name ?: 'Nessuna categoria' }}</p>
 
+                        <h5 class="pt-3">Tecnologies:</h5>
+                        @foreach ($project->tecnologies as $tecnology)
+                            <span class="badge bg-secondary">{{ $tecnology['name'] }}</span>
+                        @endforeach
+
                         @if ($project->image)
                             <div class="preview">
                                 <img id="file-image-preview" class="pt-3 d-block"
